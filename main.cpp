@@ -1,16 +1,23 @@
 #include <ncurses.h>
 #include "headers/board.hpp"
+#include "headers/game.hpp"
 
-#define board_dim 18
-#define board_rows board_dim
-#define board_cols (board_dim * 2.5)
+#define BOARD_DIM 18
+#define BOARD_ROWS BOARD_DIM
+#define BOARD_COLS (BOARD_DIM * 2.5)
 
 int main() {
     initscr();
     refresh();
+    noecho();
 
-    Board board(board_rows, board_cols);
-    board.initialize();
+    Game game(BOARD_ROWS, BOARD_COLS);
+
+    while (!game.isOver()) {
+        game.processInput();
+        game.updateState();
+        game.redraw();
+    }
 
     getch();
     endwin();
