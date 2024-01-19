@@ -1,7 +1,6 @@
 #include <ncurses.h>
-#include "headers/board.hpp"
+
 #include "headers/game.hpp"
-#include "headers/drawable.hpp"
 
 #define BOARD_DIM 18
 #define BOARD_ROWS BOARD_DIM

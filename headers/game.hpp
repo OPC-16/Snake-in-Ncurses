@@ -1,8 +1,13 @@
 #pragma once
 
 #include <ncurses.h>
+#include <time.h>
+#include <cstdlib>
+
+#include "apple.hpp"
 #include "board.hpp"
 #include "drawable.hpp"
+#include "empty.hpp"
 
 class Game {
     public:
@@ -10,6 +15,13 @@ class Game {
             board = Board(height, width);
             board.initialize();
             game_over = false;
+
+            //initialize our random seed
+            srand(time(NULL));
+        }
+
+        ~Game() {
+            delete apple;
         }
 
         void processInput() {
@@ -18,6 +30,15 @@ class Game {
         }
 
         void updateState() {
+            int y, x;
+            board.getEmptyCoordinates(y, x);
+
+            if (apple != nullptr) {         //if previous apple is present
+                board.add(Empty(apple->getY(), apple->getX())); //removing the previous apple by replacing it with ' '
+            }
+            apple = new Apple(y, x);
+            board.add(*apple);
+
             board.add(Drawable(3, 3, '#'));
         }
 
@@ -31,5 +52,6 @@ class Game {
 
     private:
         Board board;
+        Apple *apple;
         bool game_over;
 };
