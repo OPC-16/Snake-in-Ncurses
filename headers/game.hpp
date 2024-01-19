@@ -2,6 +2,7 @@
 
 #include <ncurses.h>
 #include "board.hpp"
+#include "drawable.hpp"
 
 class Game {
     public:
@@ -17,7 +18,7 @@ class Game {
         }
 
         void updateState() {
-            //TODO
+            board.add(Drawable(3, 3, '#'));
         }
 
         void redraw() {
