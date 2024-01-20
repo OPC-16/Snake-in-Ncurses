@@ -38,11 +38,43 @@ class Snake {
         }
 
         SnakePiece tail() {
-            return prev_pieces.back();
+            return prev_pieces.front();
         }
 
         SnakePiece head() {
-            return prev_pieces.front();
+            return prev_pieces.back();
+        }
+
+        Direction getDirection() {
+            return currDirection;
+        }
+
+        void setDirection(Direction d) {
+            currDirection = d;
+        }
+
+        //using current position of head of snake and current direction, this will give a SnakePiece
+        SnakePiece nextHead() {
+            //current position of the head
+            int row = head().getY();
+            int col = head().getX();
+
+            switch (currDirection) {
+                case down:
+                    row++;
+                    break;
+                case up:
+                    row--;
+                    break;
+                case left:
+                    col--;
+                    break;
+                case right:
+                    col++;
+                    break;
+            }
+
+            return SnakePiece(row, col);
         }
 
     private:

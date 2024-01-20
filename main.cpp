@@ -10,6 +10,7 @@ int main() {
     initscr();
     refresh();
     noecho();
+    curs_set(0); //hide the cursor
 
     Game game(BOARD_ROWS, BOARD_COLS);
 

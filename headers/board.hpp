@@ -58,6 +58,9 @@ class Board {
 
             this->height = height;
             this->width = width;
+
+            //timeout for user-input
+            wtimeout(board_win, 1000);
         }
 
         void addAt(int y, int x, chtype ch) {
