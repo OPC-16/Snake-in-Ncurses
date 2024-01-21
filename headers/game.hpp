@@ -53,7 +53,31 @@ class Game {
 
         void processInput() {
             chtype input = board.getInput();
-            //TODO: process the input
+            switch (input) {
+                case KEY_UP:
+                case 'k':
+                    snake.setDirection(up);
+                    break;
+                case KEY_DOWN:
+                case 'j':
+                    snake.setDirection(down);
+                    break;
+                case KEY_LEFT:
+                case 'h':
+                    snake.setDirection(left);
+                    break;
+                case KEY_RIGHT:
+                case 'l':
+                    snake.setDirection(right);
+                    break;
+                case 'p':  //condition for pausing the game
+                    board.setTimeout(-1);   //it will make the wgetch blocking, so that it'll wait forever for user to press key
+                    while (board.getInput() != 'p');
+                    board.setTimeout(1000);     //after pressing 'p' again, we set original timeout again
+                    break;
+                default:
+                    break;
+            }
         }
 
         void updateState() {
@@ -66,7 +90,7 @@ class Game {
 
             //handling the snake animation
             SnakePiece next = snake.nextHead();
-            if (next.getX() != apple->getX() && next.getY() != apple->getY()) {//if next pos is not apple then we assume that it is blank & we can proceed with this pos
+            if (next.getX() != apple->getX() && next.getY() != apple->getY()) {//if next pos is not apple then we assume that it is blank & we proceed with this pos
                 int emptyRow = snake.tail().getY();
                 int emptyCol = snake.tail().getX();
                 board.add(Empty(emptyRow, emptyCol)); //this will remove/empty the tail pos of the snake

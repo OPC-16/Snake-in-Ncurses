@@ -46,6 +46,10 @@ class Board {
             while (mvwinch(board_win, y = rand() % height, x = rand() % width) != ' ');
         }
 
+        void setTimeout(int timeout) {
+            wtimeout(board_win, timeout);
+        }
+
     private:
         WINDOW *board_win;
         int height, width;
@@ -61,6 +65,9 @@ class Board {
 
             //timeout for user-input
             wtimeout(board_win, 1000);
+
+            //enable use of arrow-keys for changing direction of the snake
+            keypad(board_win, true);
         }
 
         void addAt(int y, int x, chtype ch) {

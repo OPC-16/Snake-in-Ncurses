@@ -5,8 +5,14 @@
 
 #include "drawable.hpp"
 
+//the directions are such coz to avoid illegal moves by player
+//illegal move eg - 'snake is going in right and player presses KEY_LEFT'
+//so in following enum values are assigned in such format that sum of illegal move's direction is zero
 enum Direction {
-    up = 0, down, left, right
+    up = 1,
+    down = -1,
+    left = 2,
+    right = -2,
 };
 
 class SnakePiece : public Drawable {
@@ -50,14 +56,15 @@ class Snake {
         }
 
         void setDirection(Direction d) {
-            currDirection = d;
+            if (currDirection + d != 0)  //if the sum is not zero then it is valid move and then only we change direction
+                currDirection = d;
         }
 
         //using current position of head of snake and current direction, this will give a SnakePiece
         SnakePiece nextHead() {
             //current position of the head
-            int row = head().getY();
-            int col = head().getX();
+            int row = this->head().getY();
+            int col = this->head().getX();
 
             switch (currDirection) {
                 case down:
