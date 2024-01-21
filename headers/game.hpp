@@ -32,23 +32,33 @@ class Game {
             //initialize the snake
             snake.setDirection(down);
 
-            SnakePiece next = SnakePiece(1, 1);
-            board.add(next);
-            snake.addPiece(next);
-
-            next = snake.nextHead();
-            board.add(next);
-            snake.addPiece(next);
-
-            next = snake.nextHead();
-            board.add(next);
-            snake.addPiece(next);
-
+            handleNextPiece(SnakePiece(1, 1));
+            handleNextPiece(snake.nextHead());
+            handleNextPiece(snake.nextHead());
             snake.setDirection(right);
+            handleNextPiece(snake.nextHead());
 
-            next = snake.nextHead();
-            board.add(next);
-            snake.addPiece(next);
+            //making apple appear in the initialization phase
+            if (apple == nullptr) {
+                createApple();
+            }
+        }
+
+        void updateState() {
+            //handling the snake animation
+            handleNextPiece(snake.nextHead());
+
+            if (apple == nullptr) {
+                createApple();
+            }
+        }
+
+        void redraw() {
+            board.refresh();
+        }
+
+        bool isOver() {
+            return game_over;
         }
 
         void processInput() {
@@ -80,32 +90,32 @@ class Game {
             }
         }
 
-        void updateState() {
-            if (apple == nullptr) {
-                int y, x;
-                board.getEmptyCoordinates(y, x);
-                apple = new Apple(y, x);
-                board.add(*apple);
-            }
+    private:
+        void createApple() {
+            int y, x;
+            board.getEmptyCoordinates(y, x);
+            apple = new Apple(y, x);
+            board.add(*apple);
+        }
 
-            //handling the snake animation
-            SnakePiece next = snake.nextHead();
-            if (next.getX() != apple->getX() && next.getY() != apple->getY()) {//if next pos is not apple then we assume that it is blank & we proceed with this pos
+        void deleteApple() {
+            delete apple;
+            apple = nullptr;
+        }
+
+        void handleNextPiece(SnakePiece next) {
+            //if next pos is not apple then we assume that it is blank & we proceed with this pos
+            if (apple != nullptr && (next.getX() != apple->getX() || next.getY() != apple->getY())) {
                 int emptyRow = snake.tail().getY();
                 int emptyCol = snake.tail().getX();
                 board.add(Empty(emptyRow, emptyCol)); //this will remove/empty the tail pos of the snake
                 snake.removePiece();
             }
+            else {
+                deleteApple();
+            }
             board.add(next);
             snake.addPiece(next);
-        }
-
-        void redraw() {
-            board.refresh();
-        }
-
-        bool isOver() {
-            return game_over;
         }
 
     private:
