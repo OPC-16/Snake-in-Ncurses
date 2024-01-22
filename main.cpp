@@ -1,8 +1,9 @@
 #include <ncurses.h>
+#include <iostream>
 
 #include "headers/game.hpp"
 
-#define BOARD_DIM 18
+#define BOARD_DIM 15
 #define BOARD_ROWS BOARD_DIM
 #define BOARD_COLS (BOARD_DIM * 2.5)
 
@@ -20,6 +21,7 @@ int main() {
         game.redraw();
     }
 
-    getch();
     endwin();
+
+    std::cout << "Game Over!" << std::endl;
 }

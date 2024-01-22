@@ -104,15 +104,23 @@ class Game {
         }
 
         void handleNextPiece(SnakePiece next) {
-            //if next pos is not apple then we assume that it is blank & we proceed with this pos
-            if (apple != nullptr && (next.getX() != apple->getX() || next.getY() != apple->getY())) {
-                int emptyRow = snake.tail().getY();
-                int emptyCol = snake.tail().getX();
-                board.add(Empty(emptyRow, emptyCol)); //this will remove/empty the tail pos of the snake
-                snake.removePiece();
-            }
-            else {
-                deleteApple();
+            if (apple != nullptr) {
+                //check what is there at the new head of the snake
+                switch (board.getCharAt(next.getY(), next.getX())) {
+                    case 'A':  //if it is an apple
+                        deleteApple();
+                        break;
+                    case ' ': {  //if blank space then just move the snake forward in curr dir by one block
+                            int emptyRow = snake.tail().getY();
+                            int emptyCol = snake.tail().getX();
+                            board.add(Empty(emptyRow, emptyCol)); //this will remove/empty the tail pos of the snake
+                            snake.removePiece();
+                            break;
+                        } //weird thing about C++: if we declare variables in switch statement then we need to enclose that case's logic in { }
+                    default:        //this case is for snake colliding with Wall or itself
+                        game_over = true;
+                        break;
+                }
             }
             board.add(next);
             snake.addPiece(next);

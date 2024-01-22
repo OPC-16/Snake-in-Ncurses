@@ -31,6 +31,10 @@ class Board {
             return wgetch(board_win);  //wgetch also performs an addtionnal wrefresh on the board_win
         }
 
+        chtype getCharAt(int y, int x) {
+            return mvwinch(board_win, y, x);
+        }
+
         void clear() {
             wclear(board_win);
             box(board_win, 0, 0);
