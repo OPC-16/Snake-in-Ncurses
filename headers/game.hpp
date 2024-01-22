@@ -9,11 +9,16 @@
 #include "drawable.hpp"
 #include "empty.hpp"
 #include "snake.hpp"
+#include "scoreboard.hpp"
 
 class Game {
     public:
-        Game(int height, int width) {
-            board = Board(height, width);
+        Game(int height, int width, int speed) {
+            board = Board(height, width, speed);
+            //creating scoreboard
+            int sbRow = board.getStartRow() + height;
+            int sbCol = board.getStartCol();
+            scoreboard = Scoreboard(width, sbRow, sbCol);
             initialize();
         }
 
@@ -25,6 +30,10 @@ class Game {
             apple = nullptr;
             board.initialize();
             game_over = false;
+
+            //initializing scoreboard
+            score = 0;
+            scoreboard.initialize(score);
 
             //initialize our random seed
             srand(time(NULL));
@@ -55,6 +64,11 @@ class Game {
 
         void redraw() {
             board.refresh();
+            scoreboard.refresh();
+        }
+
+        int getScore() {
+            return score;
         }
 
         bool isOver() {
@@ -85,6 +99,9 @@ class Game {
                     while (board.getInput() != 'p');
                     board.setTimeout(1000);     //after pressing 'p' again, we set original timeout again
                     break;
+                case 'q':
+                    game_over = true;
+                    break;
                 default:
                     break;
             }
@@ -98,9 +115,12 @@ class Game {
             board.add(*apple);
         }
 
-        void deleteApple() {
+        void eatApple() {
             delete apple;
             apple = nullptr;
+            //when snake eats apple score gets incremented
+            score += 100;
+            scoreboard.updateScore(score);
         }
 
         void handleNextPiece(SnakePiece next) {
@@ -108,7 +128,7 @@ class Game {
                 //check what is there at the new head of the snake
                 switch (board.getCharAt(next.getY(), next.getX())) {
                     case 'A':  //if it is an apple
-                        deleteApple();
+                        eatApple();
                         break;
                     case ' ': {  //if blank space then just move the snake forward in curr dir by one block
                             int emptyRow = snake.tail().getY();
@@ -130,5 +150,7 @@ class Game {
         Board board;
         Apple *apple;
         Snake snake;
+        Scoreboard scoreboard;
+        int score;
         bool game_over;
 };

@@ -13,7 +13,8 @@ int main() {
     noecho();
     curs_set(0); //hide the cursor
 
-    Game game(BOARD_ROWS, BOARD_COLS);
+    int speed = 300;
+    Game game(BOARD_ROWS, BOARD_COLS, speed);
 
     while (!game.isOver()) {
         game.processInput();
@@ -24,4 +25,5 @@ int main() {
     endwin();
 
     std::cout << "Game Over!" << std::endl;
+    std::cout << "You Scored: " << game.getScore() << std::endl;
 }

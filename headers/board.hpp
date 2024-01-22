@@ -7,11 +7,11 @@
 class Board {
     public:
         Board() {
-            construct(0, 0);
+            construct(0, 0, 300);
         }
 
-        Board(int height, int width) {
-            construct(height, width);
+        Board(int height, int width, int speed) {
+            construct(height, width, speed);
         }
 
         void initialize() {
@@ -54,21 +54,31 @@ class Board {
             wtimeout(board_win, timeout);
         }
 
+        int getStartRow() {
+            return startRow;
+        }
+
+        int getStartCol() {
+            return startCol;
+        }
+
     private:
         WINDOW *board_win;
-        int height, width;
+        int height, width, startRow, startCol;
 
-        void construct(int height, int width) {
+        void construct(int height, int width, int speed) {
             int yMax, xMax;
             getmaxyx(stdscr, yMax, xMax);
 
-            board_win = newwin(height, width, (yMax/2) - height/2, (xMax/2) - width/2);
+            startRow = (yMax / 2) - height / 2;
+            startCol = (xMax / 2) - width / 2;
+            board_win = newwin(height, width, startRow, startCol);
 
             this->height = height;
             this->width = width;
 
             //timeout for user-input
-            wtimeout(board_win, 1000);
+            setTimeout(speed);
 
             //enable use of arrow-keys for changing direction of the snake
             keypad(board_win, true);
