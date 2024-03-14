@@ -1,0 +1,12 @@
+# stage 1: build
+FROM gcc:latest AS build
+WORKDIR /snake
+COPY . /snake
+RUN g++ -o output -lncurses main.cpp
+
+# stage 2: run
+FROM alpine:latest
+# install libstdc++
+RUN apk add --no-cache libstdc++
+COPY --from=build /snake/output /snake/output
+CMD [ "/snake/output" ]
