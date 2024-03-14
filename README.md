@@ -16,3 +16,7 @@ Code is simple and easy to understand.
 * [apple.hpp](https://github.com/OPC-16/Snake-in-Ncurses/blob/main/headers/apple.hpp) - inherits drawable class and represents apple on board.
 * [empty.hpp](https://github.com/OPC-16/Snake-in-Ncurses/blob/main/headers/empty.hpp) - inherits drawable class and represents an empty space on board.
 * [snake.hpp](https://github.com/OPC-16/Snake-in-Ncurses/blob/main/headers/snake.hpp) - implements snake, its direction and gives position of next head of snake.
+
+## Dockerfile
+`Dockerfile` is a single stage build, while `Dockerfile.multistage` is a multi-stage build.\
+Remember: to play the game we need to run the image interactively, i.e. `docker run -it <image-name>`
